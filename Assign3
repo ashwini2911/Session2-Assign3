@@ -1,0 +1,53 @@
+# Session2-Assign3
+
+● All components of Hadoop 1.x
+  Hadoop framework basically has two funtions in is storage which is handled by HDFS and another one is processing, which is taken care by Map Reduce.
+HDFS-
+HDFS in Hadoop 1.x mainly has 3 daemons which are 
+a. Name Node
+b. Secondary Name Node
+c. Data Node
+
+a. Name Node-  
+ 	1.There is only single instance of this process runs on a cluster and that is on a master node
+ 	2.It is responsible for managing metadata about files distributed across the cluster.
+ 	3.It manages information like location of file blocks across cluster and it’s permission.
+  4.It periodically writes the changes in one file called edits as edit logs.
+ 	5.This process reads all the metadata from a file named fsimage and keeps it in memory.
+ 	6.After this process is started, it updates metadata for newly added or removed files in RAM.
+ 	7.Name Node is heart of HDFS, if it fails the system will not be accessible.
+b. Secondary Name Node-
+ 	1.For secondary node too a single instance of process runs on a cluster.
+ 	2.This process can run on a master node (for smaller clusters) or can run on a separate node (in larger clusters)
+ 	depends on the size of the cluster.
+  3. Secondary Name node is a backup for master name node.
+  4. It is responsible to manage metadata for the Name node. It reads the information written in edit logs (by Name Node) and creates an updated file of current cluster metadata 
+  5.Then it transfers that file back to Name Node so that fsimage file can be updated.
+
+c. Data Node-
+ 	1.Many instances runs for this process on multiple slave machines.
+ 	2.It is responsible for storing the individual file blocks on the slave nodes in Hadoop cluster.
+ 	3.Based on the replication factor, a single block is replicated in multiple slave nodes(only if replication factor is > 1) 
+ 	to prevent the data loss.
+ 	4.Whenever required, this process handles the access to a data block by communicating with Name Node.
+ 	5.This process periodically sends heart beats to Name Node to make Name Node aware that slave process is running.
+  
+Map Reduce-
+Map Reduce function in Hadoop 1.x is basically divided into following phases-
+a. Job Tracker-
+ 	1.One instance of job tracker runs on a master node same as Name Node.
+ 	2.Any MapReduce job is submitted to Job Tracker first.
+ 	3.Job Tracker checks for the location various file blocks used in MapReduce processing.
+ 	4.Then it initiates the separate tasks on various Data Nodes(where blocks are present) by communicating with Task Tracker Daemons.
+b. Task Ttracker-
+  1. Multiple instances of task tracker runs on slave node.
+  2. It is responsible to receive the job information from job tracker daemon and initiates the task on that slave node.
+  3.In most of the cases, Task Tracker initiates the task on the same node where there physical data block is present.
+ 	4.Same as Data Node daemon, this process also periodically sends heart beats to Job Tracker to make Job Tracker aware that slave
+ 	process is running.
+
+
+
+
+
+ 
